@@ -16,6 +16,10 @@
 <br>
 <br>
 
+## Learning
+![alt text](https://github.com/nosy0411/RL_MADDPG/blob/main/running%20process.png?raw=true)
+<br>
+<br>
 ## Result
 
 ![alt text](https://github.com/nosy0411/RL_MADDPG/blob/main/learning%20results.png?raw=true)
