@@ -13,13 +13,7 @@ MIN_DELAY = MIN_INTERVAL = 2 * 60
 PATH_DIR = os.getcwd()
 SECRETS_PATH = os.path.join(PATH_DIR, 'secrets.json') # secrets.json 파일 위치를 명시
 
-KEEP_ALIVE_TOKEN = get_secret("KEEP_ALIVE_TOKEN", json.loads(open(SECRETS_PATH).read()))
-KEEPALIVE_URL = "https://nebula.udacity.com/api/v1/remote/keep-alive"
-TOKEN_URL = "http://metadata.google.internal/computeMetadata/v1/instance/attributes/"+KEEP_ALIVE_TOKEN
-TOKEN_HEADERS = {"Metadata-Flavor":"Google"}
-
-
-def get_secret(setting, secrets=secrets):
+def get_secret(setting, secrets):
     """
     Get a secret variable or return an explicit exception.
     """
@@ -29,6 +23,13 @@ def get_secret(setting, secrets=secrets):
     except KeyError:
         error_msg = "Set the {} environment variable".format(setting)
         print(error_msg)
+
+KEEP_ALIVE_TOKEN = get_secret("KEEP_ALIVE_TOKEN", json.loads(open(SECRETS_PATH).read()))
+KEEPALIVE_URL = "https://nebula.udacity.com/api/v1/remote/keep-alive"
+TOKEN_URL = "http://metadata.google.internal/computeMetadata/v1/instance/attributes/"+KEEP_ALIVE_TOKEN
+TOKEN_HEADERS = {"Metadata-Flavor":"Google"}
+
+
 
 def _request_handler(headers):
     def _handler(signum, frame):
@@ -47,7 +48,6 @@ def active_session(delay=DELAY, interval=INTERVAL):
         # do long-running work here
     """
     print("start context manager")
-    print(KEEP_ALIVE_TOKEN)
     token = requests.request("GET", TOKEN_URL, headers=TOKEN_HEADERS).text
     print("successively get token")
     headers = {'Authorization': "STAR " + token}
